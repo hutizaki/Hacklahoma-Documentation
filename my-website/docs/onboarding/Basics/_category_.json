@@ -1,0 +1,8 @@
+{
+  "label": "Basics",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "description": "Learn the fundamental skills needed for web development - HTML, CSS, TypeScript, Git, and React. Start here if you're new to coding!"
+  }
+}
