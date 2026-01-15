@@ -1,0 +1,307 @@
+---
+sidebar_position: 5
+title: CardFramerVariants
+description: Animation variants and customization
+parent: PhotoCollage Component
+---
+
+# CardFramerVariants
+
+The CardFramerVariants module defines all animation variants for the PhotoCollage cards using Framer Motion. This is an advanced customization file that controls how cards animate.
+
+## Overview
+
+CardFramerVariants contains animation definitions for each card state. Each variant is a function that receives position configuration and returns animation properties.
+
+## File Location
+
+```
+src/components/photoCollage/photoCollageComponents/CardFramerVariants.ts
+```
+
+## Animation States
+
+The component uses these animation states:
+
+- `idle` - Card at rest
+- `moveToPosition` - Smooth transition to new position
+- `flyLeft` - Card flying off-screen to the left
+- `flyRight` - Card flying off-screen to the right
+- `offscreen` - Initial state before entrance
+- `onscreen` - Entrance animation
+
+## Variant Structure
+
+Each variant is a function that receives configuration:
+
+```tsx
+variantName: (config: VariantCustomProps) => ({
+  // Animation properties
+  x: 0,
+  y: 0,
+  top: config.top,
+  left: config.left,
+  rotate: config.rotate,
+  // ... more properties
+  transition: {
+    // Transition configuration
+  }
+})
+```
+
+## Available Variants
+
+### idle
+
+Card at rest with no animation.
+
+```tsx
+idle: (config: VariantCustomProps) => ({
+  x: 0,
+  y: 0,
+})
+```
+
+### moveToPosition
+
+Smoothly transitions card to a new position. Uses spring physics.
+
+```tsx
+moveToPosition: (config: VariantCustomProps) => ({
+  x: 0,
+  y: 0,
+  top: config.top,
+  left: config.left,
+  rotate: config.rotate,
+  translateX: '-50%',
+  translateY: '-50%',
+  opacity: 1,
+  scale: configSettings.SCALE_VALUE,
+  transition: {
+    type: 'spring',
+    bounce: 0.2,
+    duration: 0.3,
+    damping: 20,
+    stiffness: 200,
+  },
+})
+```
+
+**Customization:** Adjust `bounce`, `duration`, `damping`, and `stiffness` for different feel.
+
+### flyLeft
+
+Card flies off-screen to the left during shuffle.
+
+```tsx
+flyLeft: (config: VariantCustomProps) => ({
+  x: [0, `-${configSettings.FLY_DISTANCE}`, 0],
+  rotate: [0, -25, 0],
+  // ... other properties
+  transition: {
+    type: 'tween',
+    duration: 0.6,
+    ease: 'easeInOut',
+    times: [0, 0.5, 1],
+  },
+})
+```
+
+**Customization:** Change `duration` or `ease` function for different timing.
+
+### flyRight
+
+Card flies off-screen to the right during shuffle.
+
+```tsx
+flyRight: (config: VariantCustomProps) => ({
+  x: [0, configSettings.FLY_DISTANCE, 0],
+  rotate: [0, 25, 0],
+  // ... other properties
+  transition: {
+    type: 'tween',
+    duration: 0.6,
+    ease: 'easeInOut',
+    times: [0, 0.5, 1],
+  },
+})
+```
+
+### offscreen
+
+Initial state before cards enter. Cards start off-screen.
+
+```tsx
+offscreen: (config: VariantCustomProps) => ({
+  x: config.flyDirection === 'right' ? '55vw' : '-55vw',
+  opacity: 0,
+  scale: configSettings.SCALE_VALUE,
+})
+```
+
+### onscreen
+
+Entrance animation when cards first appear.
+
+```tsx
+onscreen: (config: VariantCustomProps) => ({
+  x: 0,
+  y: 0,
+  top: config.top,
+  left: config.left,
+  rotate: config.rotate,
+  opacity: 1,
+  scale: configSettings.SCALE_VALUE,
+  transition: {
+    type: 'spring',
+    bounce: 0.3,
+    duration: 0.8,
+    delay: config.delay || 0,
+    damping: 20,
+    stiffness: 300,
+  },
+})
+```
+
+**Customization:** Adjust `bounce`, `duration`, `damping`, and `stiffness` for entrance feel.
+
+## Common Customizations
+
+### Making Animations Faster
+
+Reduce duration values:
+
+```tsx
+transition: {
+  type: 'spring',
+  duration: 0.2, // Faster (was 0.3)
+  // ...
+}
+```
+
+### Making Animations Slower
+
+Increase duration values:
+
+```tsx
+transition: {
+  type: 'spring',
+  duration: 0.5, // Slower (was 0.3)
+  // ...
+}
+```
+
+### Changing Spring Physics
+
+Adjust bounce, damping, and stiffness:
+
+```tsx
+transition: {
+  type: 'spring',
+  bounce: 0.4,    // More bouncy
+  damping: 15,    // Less damping (more oscillation)
+  stiffness: 250, // Stiffer spring
+}
+```
+
+### Changing Ease Functions
+
+For tween animations, try different ease functions:
+
+```tsx
+transition: {
+  type: 'tween',
+  ease: 'easeOut', // or 'easeIn', 'easeInOut', 'linear'
+  // ...
+}
+```
+
+## Advanced Customization
+
+### Custom Rotation During Flight
+
+Modify the rotation array in `flyLeft` or `flyRight`:
+
+```tsx
+flyLeft: (config: VariantCustomProps) => ({
+  rotate: [0, -45, 0], // More rotation (was -25)
+  // ...
+})
+```
+
+### Custom Flight Distance
+
+The flight distance comes from `Config.ts` (`FLY_DISTANCE`), but you can override it:
+
+```tsx
+flyLeft: (config: VariantCustomProps) => ({
+  x: [0, '-60vw', 0], // Custom distance (overrides config)
+  // ...
+})
+```
+
+### Staggered Entrance Delays
+
+The `onscreen` variant uses `config.delay` for staggered entrances. This is set in `PhotoCollage.tsx`:
+
+```tsx
+const entranceDelay = Math.max(0, (card.zIndex - 1) * 0.15);
+```
+
+To change stagger timing, modify the multiplier (0.15) in PhotoCollage.tsx.
+
+## Best Practices
+
+### Spring Physics
+
+- Higher `stiffness` = faster, snappier motion
+- Higher `damping` = less oscillation, smoother stop
+- Higher `bounce` = more bouncy effect
+- Balance these values for natural motion
+
+### Timing
+
+- Entrance animations: 0.6-1.0 seconds feels natural
+- Position transitions: 0.2-0.4 seconds feels responsive
+- Flight animations: 0.5-0.8 seconds feels smooth
+
+### Performance
+
+- Use `willChange: 'transform'` for GPU acceleration
+- Avoid animating too many properties simultaneously
+- Test on lower-end devices
+
+## Troubleshooting
+
+### Animations Not Smooth
+
+If animations are choppy:
+
+1. Check GPU acceleration is enabled
+2. Reduce number of animated properties
+3. Simplify transition configurations
+4. Test on different devices
+
+### Cards Not Moving
+
+If cards don't animate:
+
+1. Verify variant names match AnimationState enum
+2. Check that variants are properly exported
+3. Ensure Framer Motion is installed
+4. Check browser console for errors
+
+### Timing Issues
+
+If animations feel off:
+
+1. Adjust duration values incrementally
+2. Test spring physics values
+3. Consider user experience - too fast can be jarring
+4. Test on different screen sizes
+
+## Related Files
+
+- [Config](./config) - Animation distance and scale settings
+- [Card.ts](../src/components/photoCollage/photoCollageComponents/Card.ts) - AnimationState enum
+- [Main PhotoCollage Documentation](../photocollage) - Complete component guide

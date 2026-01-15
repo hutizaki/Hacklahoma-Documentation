@@ -27,7 +27,7 @@ import {
   CardAnimationMap,
   AnimationState,
   getPositionConfig,
-  getCardLetter,    // <---- 🟥🟥🟥🟥🟥 REMOVE THIS LINE WHEN IMAGES ARE ADDED 🟥🟥🟥🟥🟥
+  getCardLetter, // <-- This changes to getPhotoData 🟥🟥🟥🟥🟥 EDIT THIS LINE WHEN IMAGES ARE ADDED 🟥🟥🟥🟥🟥
 } from './photoCollageComponents/Card';
 
 // Logic and data imports
@@ -37,8 +37,9 @@ import { getPhotoData, photoImages } from './photoCollageComponents/PhotoGallery
 import configSettings from './photoCollageComponents/Config';
 
 // Component imports
-import { Postcard } from './photoCollageComponents/Postcard';
 import { ShuffleButton } from './photoCollageComponents/ShuffleButton';
+import { Postcard } from './photoCollageComponents/Postcard';
+
 /**
  * Main Photo Collage Component
  */
@@ -52,14 +53,14 @@ const PhotoCollage: React.FC = () => {
   // Track whether the initial entrance animation has completed
   const [hasCompletedEntrance, setHasCompletedEntrance] = useState(false);
   
-  // Track whether button animations have completed
+  // Button animation states
   const [leftButtonAnimationComplete, setLeftButtonAnimationComplete] = useState(false);
   const [rightButtonAnimationComplete, setRightButtonAnimationComplete] = useState(false);
   const [buttonsDisabled, setButtonsDisabled] = useState(false);
   
-  // Use ref for immediate synchronous check (prevents race conditions)
+  // Ref for immediate synchronous check (prevents race conditions)
   const isAnimatingRef = useRef(false);
-  
+
   // Track animation state for each card
   const [animationStates, setAnimationStates] = useState<CardAnimationMap>({
     [CardId.CARD_A]: AnimationState.OFFSCREEN,
@@ -70,8 +71,9 @@ const PhotoCollage: React.FC = () => {
     [CardId.CARD_F]: AnimationState.OFFSCREEN,
   });
 
-const touchStartX = useRef<number>(0);
-const touchStartY = useRef<number>(0);
+  // Touch swipe detection for mobile
+  const touchStartX = useRef<number>(0);
+  const touchStartY = useRef<number>(0);
 
   /**
    * Trigger entrance animation when component comes into view
@@ -116,7 +118,7 @@ const touchStartY = useRef<number>(0);
     const updatedCards = currentCards.map(c => ({ ...c }));
     const centerBackCard = updatedCards.find(c => c.position === 'centerBack');
     const centerCard = updatedCards.find(c => c.position === 'center');
-    
+
     if (centerCard && centerBackCard) {
       if (centerCard.currentPhotoIndex === 0) {
         centerBackCard.currentPhotoIndex = photoImages.length - 1; // Wrap to last photo
@@ -124,11 +126,11 @@ const touchStartY = useRef<number>(0);
         centerBackCard.currentPhotoIndex = centerCard.currentPhotoIndex - 1; // Move to previous photo
       }
     }
-    
+
     return updatedCards;
   };
 
-    /**
+  /**
    * Handle touch start event for swipe detection
    */
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -140,7 +142,7 @@ const touchStartY = useRef<number>(0);
    * Handle touch end event for swipe detection
    * Detects horizontal swipe direction and triggers appropriate shuffle
    */
-  const handleTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
+  const handleTouchEnd = (e: React.TouchEvent) => {
     // Skip if entrance animation hasn't completed or already animating
     if (!hasCompletedEntrance || isAnimatingRef.current || buttonsDisabled) return;
 
@@ -241,7 +243,7 @@ const touchStartY = useRef<number>(0);
           />
 
           {/* Photo collage container */}
-          <motion.div 
+          <motion.div
             className="photo-collage-container relative w-1/2 flex-shrink-0 h-[16rem] md:h-[24rem] lg:h-[24rem] xl:h-[24rem] overflow-visible"
             onViewportEnter={() => setIsInView(true)}
             onViewportLeave={() => setIsInView(false)}
@@ -267,7 +269,7 @@ const touchStartY = useRef<number>(0);
               // Determine which photo to display for this card
               // For now, all cards display their currentPhotoIndex (static photos)
               const photoIndexToDisplay = card.currentPhotoIndex;
-              
+
               const photoData = getPhotoData(photoIndexToDisplay);
               
               // Get the permanent card letter (A-F) for the footer
@@ -306,7 +308,7 @@ const touchStartY = useRef<number>(0);
                       });
                     }
 
-                    // Reset MOVE_TO_POSITION animations to MOVE_TO_POSITION after completion
+                    // Reset fly animations to MOVE_TO_POSITION after completion
                     // This ensures the next fly animation will trigger (state change detection)
                     if (definition === AnimationState.FLY_LEFT || definition === AnimationState.FLY_RIGHT) {
                       setAnimationStates(prevStates => ({
@@ -319,8 +321,8 @@ const touchStartY = useRef<number>(0);
                   <Postcard
                     imageUrl={photoData.path}
                     title={photoData.title}
-                    footer={`CARD ${cardLetter}`}     // <---- 🟥🟥🟥🟥🟥 Change to {photoData.footer} 🟥🟥🟥🟥🟥
-                    demoNumber={photoData.demoNumber} // <---- 🟥🟥🟥🟥🟥 REMOVE THIS WHEN IMAGES ARE ADDED 🟥🟥🟥🟥🟥
+                    footer={photoData.footer}
+                    demoNumber={photoData.demoNumber}
                   />
                 </motion.div>
               );

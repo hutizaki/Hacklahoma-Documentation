@@ -1,0 +1,245 @@
+---
+sidebar_position: 3
+title: Config
+description: Configuration constants and settings
+parent: PhotoCollage Component
+---
+
+# Config
+
+The Config module contains all configuration constants for the PhotoCollage component. This is where you'll adjust colors, animation speeds, and other visual settings.
+
+## Overview
+
+Config.ts contains a single exported object with all configuration values:
+
+```tsx
+const configSettings = {
+  FRAMED_CARD_BG: '#ffffff',
+  SCALE_VALUE: 0.7,
+  OFF_SCREEN_DISTANCE: '35vw',
+  FLY_DISTANCE: '50vw',
+  SHUFFLE_DELAY: 300,
+  CARD_SPREAD: 10,
+}
+```
+
+## File Location
+
+```
+src/components/photoCollage/photoCollageComponents/Config.ts
+```
+
+## Configuration Options
+
+### FRAMED_CARD_BG
+
+**Type:** `string` (hex color)
+
+**Default:** `'#ffffff'` (white)
+
+**Description:** Background color for the postcard frame around each photo.
+
+**Example:**
+```tsx
+FRAMED_CARD_BG: '#f4ece1', // Vintage beige
+```
+
+**Common Values:**
+- `'#ffffff'` - White (default)
+- `'#f4ece1'` - Vintage beige
+- `'#f5f5dc'` - Beige
+- `'#fff8dc'` - Cornsilk
+
+### SCALE_VALUE
+
+**Type:** `number`
+
+**Default:** `0.7`
+
+**Description:** Scale factor for all cards. Lower values make cards smaller, higher values make them larger.
+
+**Example:**
+```tsx
+SCALE_VALUE: 0.8, // Larger cards
+```
+
+**Range:** Typically between `0.5` and `1.0`
+
+### OFF_SCREEN_DISTANCE
+
+**Type:** `string` (CSS viewport width)
+
+**Default:** `'35vw'`
+
+**Description:** Distance cards travel when moving off-screen during entrance animations.
+
+**Example:**
+```tsx
+OFF_SCREEN_DISTANCE: '40vw', // Cards start further off-screen
+```
+
+### FLY_DISTANCE
+
+**Type:** `string` (CSS viewport width)
+
+**Default:** `'50vw'`
+
+**Description:** Distance cards travel when flying off-screen during shuffle animations.
+
+**Example:**
+```tsx
+FLY_DISTANCE: '60vw', // Cards fly further when shuffling
+```
+
+### SHUFFLE_DELAY
+
+**Type:** `number` (milliseconds)
+
+**Default:** `300`
+
+**Description:** Delay between shuffle animations. Higher values make shuffles slower, lower values make them faster.
+
+**Example:**
+```tsx
+SHUFFLE_DELAY: 500, // Slower shuffles
+```
+
+**Range:** Typically between `200` and `600` milliseconds
+
+### CARD_SPREAD
+
+**Type:** `number` (percentage)
+
+**Default:** `10`
+
+**Description:** Controls how far non-center cards are positioned from the center. Lower values create a more compact layout, higher values create a more spread out layout.
+
+**Example:**
+```tsx
+CARD_SPREAD: 15, // Cards further apart
+```
+
+**How it works:**
+- Spread affects both horizontal (X) and vertical (Y) positioning
+- Higher spread values move cards further from center toward their corners
+- Top-left cards: `top: 50% - CARD_SPREAD`, `left: 50% - CARD_SPREAD`
+- Top-right cards: `top: 50% - CARD_SPREAD`, `left: 50% + CARD_SPREAD`
+- Bottom-left cards: `top: 50% + CARD_SPREAD`, `left: 50% - CARD_SPREAD`
+- Bottom-right cards: `top: 50% + CARD_SPREAD`, `left: 50% + CARD_SPREAD`
+- Center cards: Always at 50% (not affected)
+
+**Range:** Typically between `5` and `20` percent
+
+## Common Customizations
+
+### Changing Card Background Color
+
+To change the postcard background color:
+
+```tsx
+const configSettings = {
+  FRAMED_CARD_BG: '#f4ece1', // Change this value
+  // ... other settings
+}
+```
+
+### Adjusting Animation Speed
+
+To make animations faster or slower:
+
+```tsx
+const configSettings = {
+  SHUFFLE_DELAY: 200, // Faster (lower number)
+  // or
+  SHUFFLE_DELAY: 500, // Slower (higher number)
+  // ... other settings
+}
+```
+
+### Changing Card Size
+
+To make cards larger or smaller:
+
+```tsx
+const configSettings = {
+  SCALE_VALUE: 0.8, // Larger cards
+  // or
+  SCALE_VALUE: 0.6, // Smaller cards
+  // ... other settings
+}
+```
+
+### Adjusting Card Spread
+
+To change how spread out the cards are:
+
+```tsx
+const configSettings = {
+  CARD_SPREAD: 15, // Cards further apart
+  // or
+  CARD_SPREAD: 7, // Cards closer together
+  // ... other settings
+}
+```
+
+## Complete Example
+
+```tsx
+const configSettings = {
+  FRAMED_CARD_BG: '#f4ece1',  // Vintage beige background
+  SCALE_VALUE: 0.75,          // Slightly larger cards
+  OFF_SCREEN_DISTANCE: '40vw', // Cards start further off-screen
+  FLY_DISTANCE: '55vw',        // Cards fly further when shuffling
+  SHUFFLE_DELAY: 350,          // Slightly slower shuffles
+  CARD_SPREAD: 12,             // Cards slightly more spread out
+}
+
+export default configSettings;
+```
+
+## Best Practices
+
+### Color Selection
+
+- Choose colors that complement your photos
+- Ensure sufficient contrast for text readability
+- Consider your site's overall color scheme
+
+### Animation Timing
+
+- Faster delays (200-300ms) feel snappier but can be jarring
+- Slower delays (400-600ms) feel more elegant but can feel sluggish
+- Test different values to find what feels right for your use case
+
+### Scale Values
+
+- Values below 0.6 make cards very small
+- Values above 0.9 make cards very large
+- 0.7-0.8 is typically a good range for most layouts
+
+## Troubleshooting
+
+### Colors Not Updating
+
+If color changes don't appear:
+
+1. Clear your browser cache
+2. Restart your development server
+3. Check that you saved the file
+4. Verify the hex color format is correct (include the `#`)
+
+### Animations Too Fast/Slow
+
+If animations feel wrong:
+
+1. Adjust `SHUFFLE_DELAY` in small increments (50ms at a time)
+2. Test on different devices (mobile vs desktop)
+3. Consider user experience - too fast can be disorienting
+
+## Related Files
+
+- [PhotoGallery](./photoGallery) - Photo data management
+- [Postcard Component](./postcard) - Uses FRAMED_CARD_BG
+- [CardFramerVariants](./cardFramerVariants) - Uses animation settings
+- [Main PhotoCollage Documentation](../photocollage) - Complete component guide

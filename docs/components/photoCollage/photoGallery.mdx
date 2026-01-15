@@ -1,0 +1,180 @@
+---
+sidebar_position: 2
+title: PhotoGallery
+description: Managing photo data and images
+parent: PhotoCollage Component
+---
+
+import BrowserWindow from '@site/src/components/BrowserWindow';
+import { photoImages } from '@site/src/components/photoCollage/photoCollageComponents/PhotoGallery';
+
+# PhotoGallery
+
+The PhotoGallery module manages all photo data for the PhotoCollage component. This is the file you'll modify most often when adding your own photos.
+
+## Overview
+
+PhotoGallery contains:
+- The array of photos displayed in the collage
+- Functions to retrieve photo data by index
+- Type definitions for photo data
+
+## File Location
+
+```
+src/components/photoCollage/photoCollageComponents/PhotoGallery.ts
+```
+
+## PhotoData Interface
+
+Each photo in the gallery must have this structure:
+
+```tsx
+interface PhotoData {
+  path?: string;      // Image file path (optional in demo mode)
+  title: string;      // Title displayed above the image
+  footer: string;     // Footer text displayed below the image
+  demoNumber?: number; // Demo mode: number to display instead of image
+}
+```
+
+## Adding Your Own Photos
+
+### Step 1: Import Your Images
+
+First, import your image files at the top of `PhotoGallery.ts`:
+
+```tsx
+import MyPhoto1 from '../assets/my-photo-1.jpg';
+import MyPhoto2 from '../assets/my-photo-2.jpg';
+import MyPhoto3 from '../assets/my-photo-3.jpg';
+```
+
+**Important:** Use relative imports that match your project structure. Place images in your assets directory.
+
+### Step 2: Add to photoImages Array
+
+Add your photos to the `photoImages` array:
+
+```tsx
+export const photoImages: PhotoData[] = [
+  {
+    path: MyPhoto1,
+    title: 'My First Photo',
+    footer: 'PHOTO-001',
+  },
+  {
+    path: MyPhoto2,
+    title: 'My Second Photo',
+    footer: 'PHOTO-002',
+  },
+  {
+    path: MyPhoto3,
+    title: 'My Third Photo',
+    footer: 'PHOTO-003',
+  },
+  // Add more photos here...
+];
+```
+
+### Step 3: Remove Demo Mode
+
+Once you have real images, remove the `demoNumber` property from the interface and all photo objects.
+
+## getPhotoData Function
+
+The `getPhotoData` function retrieves photo data by index:
+
+```tsx
+export const getPhotoData = (index: number): PhotoData => {
+  if (index < 0) {
+    throw new Error(`Invalid card index: ${index}. Must be >= 0`);
+  }
+  
+  if (index < photoImages.length) {
+    return photoImages[index];
+  }
+  
+  // Returns fallback photo if index is out of bounds
+  return {
+    path: Postcard, // Fallback image
+    title: 'Hacklahoma, Norman, Okla.',
+    footer: `HK2024-${String(index + 1).padStart(3, '0')}`,
+  };
+};
+```
+
+**Usage:** This function is called internally by PhotoCollage. You typically don't need to call it directly.
+
+## Best Practices
+
+### Image Format
+
+- Use WebP format for best compression
+- Keep images under 500KB each
+- Resize images to appropriate dimensions (avoid 4K images)
+
+### Photo Count
+
+- **Recommended:** 12-24 photos
+- **Minimum:** 6 photos (one per card)
+- **Maximum:** No hard limit, but more photos means slower loading
+
+### Naming Conventions
+
+- Use descriptive titles that help users understand the photo
+- Use consistent footer formats (e.g., 'PHOTO-001', 'PHOTO-002')
+- Keep titles concise (they appear above the image)
+
+## Example: Complete PhotoGallery Setup
+
+```tsx
+import Photo1 from '../assets/event-1.jpg';
+import Photo2 from '../assets/event-2.jpg';
+import Photo3 from '../assets/event-3.jpg';
+// ... more imports
+
+export const photoImages: PhotoData[] = [
+  {
+    path: Photo1,
+    title: 'Opening Ceremony, Norman, Okla.',
+    footer: 'EVENT-001',
+  },
+  {
+    path: Photo2,
+    title: 'Team Presentations, Norman, Okla.',
+    footer: 'EVENT-002',
+  },
+  {
+    path: Photo3,
+    title: 'Awards Ceremony, Norman, Okla.',
+    footer: 'EVENT-003',
+  },
+  // ... more photos
+];
+```
+
+## Troubleshooting
+
+### Images Not Showing
+
+If images don't appear:
+
+1. Check that imports are correct (no typos in file paths)
+2. Verify images exist in the specified directory
+3. Check browser console for import errors
+4. Ensure you're using imported images, not string paths
+
+### TypeScript Errors
+
+If you get type errors:
+
+1. Make sure all photos have `title` and `footer` properties
+2. Ensure `path` is an imported image, not a string
+3. Check that the `PhotoData` interface matches your data structure
+
+## Related Files
+
+- [Postcard Component](./postcard) - Displays individual photos
+- [Config](./config) - Configuration settings
+- [Main PhotoCollage Documentation](../photocollage) - Complete component guide

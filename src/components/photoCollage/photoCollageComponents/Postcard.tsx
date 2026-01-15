@@ -1,6 +1,6 @@
 /**
  * Postcard Component
- *
+ * 
  * Renders a photo with vintage postcard styling including:
  * - Teal border around the image
  * - Top title text in italic serif font
@@ -20,7 +20,7 @@ interface PostcardProps {
   /** Footer text displayed below the image (bottom right) */
   footer: string;
   /** Demo mode: display a number instead of an image */
-  demoNumber?: number; // <---- 🟥🟥🟥🟥🟥 REMOVE THIS WHEN IMAGES ARE ADDED 🟥🟥🟥🟥🟥
+  demoNumber?: number;
 }
 
 /**
@@ -38,7 +38,7 @@ export const Postcard: React.FC<PostcardProps> = ({
       {/* Top text */}
       <div className="text-right pr-6 pt-2">
         <p
-          className="text-gray-700 tracking-wide"
+          className="text-gray-700 tracking-wide mb-0"
           style={{
             fontFamily: 'American Typewriter, serif',
             fontSize: '14px',
@@ -52,8 +52,6 @@ export const Postcard: React.FC<PostcardProps> = ({
 
       {/* Image or Demo Number */}
       <div className="digital-photo">
-        {/* DELETE BELOW */}
-
         {demoNumber !== undefined ? (
           <div
             className="w-full h-auto flex items-center justify-center bg-gradient-to-br from-blue-200 to-purple-200"
@@ -64,26 +62,22 @@ export const Postcard: React.FC<PostcardProps> = ({
             </span>
           </div>
         ) : (
-          
-          // DELETE ABOVE
           <img
             src={imageUrl}
             alt={title}
             className="w-full h-auto block"
             style={{ aspectRatio: '8/5', objectFit: 'fill' }}
           />
-
         )}
       </div>
 
       {/* Bottom text */}
-      <div className="text-right pr-2">
+      <div className="text-right py-[0.25rem] pr-2">
         <p
-          className="text-gray-600 text-xs tracking-widest"
+          className="text-gray-600 text-xs tracking-widest mb-0"
           style={{
             fontFamily: 'Courier New, monospace',
-            fontSize: '11px',
-            paddingBottom: '0.25rem'
+            fontSize: '11px'
           }}
         >
           {footer}

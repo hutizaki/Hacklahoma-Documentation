@@ -1,0 +1,209 @@
+---
+sidebar_position: 3
+title: Card Positioning
+description: Card positions, types, and spread configuration
+parent: PhotoCollage Component
+---
+
+import BrowserWindow from '@site/src/components/BrowserWindow';
+import { SpreadDemo } from '@site/src/components/photoCollage/photoCollageComponents/SpreadDemo';
+
+# Card Positioning
+
+The Card module (`Card.ts`) defines all positioning logic for the PhotoCollage component. This includes the six card positions, their coordinates, rotations, and the spread configuration system.
+
+## File Location
+
+```
+src/components/photoCollage/photoCollageComponents/Card.ts
+```
+
+## Card Positions
+
+The component uses 6 fixed positions for cards:
+
+| Position | Z-Index | Description |
+|----------|---------|-------------|
+| `CENTER` | 5 | Front-most card (always visible) |
+| `TOP_LEFT` | 4 | Behind center, left side |
+| `TOP_RIGHT` | 3 | Behind center, right side |
+| `BOTTOM_LEFT` | 2 | Back layer, left side |
+| `BOTTOM_RIGHT` | 1 | Back-most card, right side |
+| `CENTER_BACK` | 0 | Hidden behind center (buffer card) |
+
+The `CENTER_BACK` position is used as a buffer - it holds the next photo that will appear when you navigate forward.
+
+## Card Spread Configuration
+
+The `CARD_SPREAD` setting in `Config.ts` controls how far non-center cards are positioned from the center in both horizontal (X) and vertical (Y) directions. Higher spread values move cards further toward their respective corners, affecting the overall layout and visual density of the collage.
+
+<BrowserWindow>
+  <div style={{ padding: '2rem' }}>
+    <SpreadDemo />
+  </div>
+</BrowserWindow>
+
+### Understanding Card Spread
+
+All non-center cards are positioned relative to the center (50%) in both X and Y directions:
+
+- **Top-left cards** (TOP_LEFT): `top: 50% - CARD_SPREAD`, `left: 50% - CARD_SPREAD`
+- **Top-right cards** (TOP_RIGHT): `top: 50% - CARD_SPREAD`, `left: 50% + CARD_SPREAD`
+- **Bottom-left cards** (BOTTOM_LEFT): `top: 50% + CARD_SPREAD`, `left: 50% - CARD_SPREAD`
+- **Bottom-right cards** (BOTTOM_RIGHT): `top: 50% + CARD_SPREAD`, `left: 50% + CARD_SPREAD`
+- **Center cards** (CENTER, CENTER_BACK): Always at 50% (not affected by spread)
+
+### Adjusting Spread
+
+Edit `Config.ts` to change the spread:
+
+```tsx
+const configSettings = {
+  CARD_SPREAD: 10, // Change this value (default: 10)
+  CARD_SPREAD_X: null, // Optional: Custom horizontal spread
+  CARD_SPREAD_Y: null, // Optional: Custom vertical spread
+  // ... other settings
+}
+```
+
+**Spread Values:**
+- `5-8%`: Cards close together, compact layout
+- `10%`: Default, balanced spacing
+- `15-20%`: Cards far apart, spread out layout
+
+### Custom X/Y Spread
+
+You can also set separate horizontal and vertical spread values:
+
+```tsx
+const configSettings = {
+  CARD_SPREAD: 10, // Base uniform spread
+  CARD_SPREAD_X: 5, // Custom horizontal spread
+  CARD_SPREAD_Y: null, // Use uniform for vertical
+  // ... other settings
+}
+```
+
+**How it works:**
+- If both `CARD_SPREAD_X` and `CARD_SPREAD_Y` are set: Uses only custom values (uniform is disabled)
+- If only one is set: Adds that value to the uniform spread
+- If neither is set: Uses uniform spread for both axes
+
+## Position Configuration
+
+Each position has a `PositionConfig` that defines:
+
+- `top`: Vertical position as CSS percentage (e.g., '50%')
+- `left`: Horizontal position as CSS percentage (e.g., '50%')
+- `rotate`: Rotation angle in degrees (positive = clockwise)
+- `zIndex`: Stacking order (1 = back, 5 = front)
+- `flyDirection`: Direction card should fly when exiting ('left' or 'right')
+
+### Base Position Configs
+
+The base positions are defined in `POSITION_CONFIGS`:
+
+```tsx
+export const POSITION_CONFIGS: PositionConfigMap = {
+  [CardPosition.CENTER]: {
+    top: '50%',
+    left: '50%',
+    rotate: 0,
+    zIndex: 5,
+    flyDirection: 'right',
+  },
+  [CardPosition.TOP_LEFT]: {
+    top: '40%',
+    left: '42%',
+    rotate: -8,
+    zIndex: 4,
+    flyDirection: 'left',
+  },
+  // ... other positions
+};
+```
+
+### Dynamic Position Calculation
+
+The `getPositionConfig()` function applies `CARD_SPREAD` to dynamically adjust non-center card positions:
+
+```tsx
+export function getPositionConfig(position: CardPosition): PositionConfig {
+  const baseConfig = POSITION_CONFIGS[position];
+  
+  // Center positions are always at 50%, no spread applied
+  if (position === CardPosition.CENTER || position === CardPosition.CENTER_BACK) {
+    return baseConfig;
+  }
+  
+  // Apply spread to non-center positions (both X and Y directions)
+  // ... spread calculation logic
+}
+```
+
+## Card Types
+
+### CardPosition Enum
+
+Defines the six possible positions a card can occupy:
+
+```tsx
+export enum CardPosition {
+  CENTER = 'center',
+  CENTER_BACK = 'centerBack',
+  TOP_LEFT = 'topLeft',
+  TOP_RIGHT = 'topRight',
+  BOTTOM_LEFT = 'bottomLeft',
+  BOTTOM_RIGHT = 'bottomRight'
+}
+```
+
+### CardId Enum
+
+Unique identifiers for each of the six physical cards:
+
+```tsx
+export enum CardId {
+  CARD_A = 'cardA',
+  CARD_B = 'cardB',
+  CARD_C = 'cardC',
+  CARD_D = 'cardD',
+  CARD_E = 'cardE',
+  CARD_F = 'cardF',
+}
+```
+
+### Card Interface
+
+The core data structure for cards:
+
+```tsx
+export interface Card {
+  id: CardId;              // Never changes
+  position: CardPosition;  // Changes during shuffles
+  zIndex: number;          // Changes during shuffles
+  currentPhotoIndex: number; // Updated when card reaches CENTER
+}
+```
+
+## Customizing Positions
+
+To modify card positions, edit the `POSITION_CONFIGS` object in `Card.ts`. Be careful when changing positions as it affects the visual balance of the collage.
+
+### Example: Adjusting a Position
+
+```tsx
+[CardPosition.TOP_LEFT]: {
+  top: '38%',      // Moved up (was 40%)
+  left: '40%',     // Moved left (was 42%)
+  rotate: -10,     // More rotation (was -8)
+  zIndex: 4,
+  flyDirection: 'left',
+}
+```
+
+## Related Files
+
+- [Config](./config) - Spread configuration settings
+- [CardFramerVariants](./cardFramerVariants) - Animation variants that use positions
+- [Main PhotoCollage Documentation](../photocollage) - Complete component guide

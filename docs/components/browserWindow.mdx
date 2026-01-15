@@ -1,0 +1,88 @@
+---
+sidebar_position: 2
+title: BrowserWindow Component
+description: A browser frame wrapper component for displaying content
+---
+
+import BrowserWindow from '@site/src/components/BrowserWindow';
+
+# BrowserWindow Component
+
+A React component that wraps content in a styled browser window frame. Useful for displaying components, demos, or code examples in a browser-like container.
+
+<BrowserWindow>
+  <div style={{ padding: '2rem', textAlign: 'center' }}>
+    <h2>Example Content</h2>
+    <p>This content is displayed inside a browser window frame.</p>
+  </div>
+</BrowserWindow>
+
+## Overview
+
+The BrowserWindow component creates a visual browser frame with:
+- Traffic light buttons (red, yellow, green)
+- Address bar with customizable URL
+- Hamburger menu icon
+- Styled border and rounded corners
+
+## Basic Usage
+
+```jsx
+import BrowserWindow from '@site/src/components/BrowserWindow';
+
+<BrowserWindow>
+  <YourContent />
+</BrowserWindow>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `ReactNode` | - | Content to display inside the browser window |
+| `url` | `string` | `'http://localhost:3000'` | URL displayed in the address bar |
+
+## Examples
+
+### Default URL
+
+```jsx
+<BrowserWindow>
+  <div>Your content here</div>
+</BrowserWindow>
+```
+
+### Custom URL
+
+```jsx
+<BrowserWindow url="https://example.com">
+  <div>Your content here</div>
+</BrowserWindow>
+```
+
+### With Component
+
+```jsx
+import BrowserWindow from '@site/src/components/BrowserWindow';
+import PhotoCollage from '@site/src/components/photoCollage/PhotoCollage';
+
+<BrowserWindow>
+  <PhotoCollage />
+</BrowserWindow>
+```
+
+## Styling
+
+The component uses CSS variables for theming:
+- Border color: `var(--ifm-color-emphasis-200)`
+- Background color: `var(--ifm-background-color)`
+- Header background: `var(--ifm-color-emphasis-200)`
+
+These automatically adapt to your theme's color scheme.
+
+## Use Cases
+
+- Displaying component demos
+- Showing code examples in context
+- Creating visual documentation
+- Presenting interactive examples

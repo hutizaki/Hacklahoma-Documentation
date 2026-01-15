@@ -6,6 +6,8 @@
  * easier to maintain and extend.
  */
 
+import configSettings from './Config';
+
 /**
  * Represents the six distinct positions cards can occupy in the collage.
  * Each position has associated properties like coordinates, rotation, and z-index.
@@ -202,16 +204,82 @@ export type PositionConfigMap = Record<CardPosition, PositionConfig>;
 
 /**
  * Get the configuration for a specific position.
+ * Applies CARD_SPREAD from config to dynamically adjust non-center card positions.
+ * Spread affects both X and Y directions, moving cards toward their corners.
  * 
  * @param position - The position to look up
- * @returns The complete configuration object for that position
+ * @returns The complete configuration object for that position with spread applied
  * 
  * @example
  * const centerConfig = getPositionConfig(CardPosition.CENTER);
  * // Returns: { top: '50%', left: '50%', rotate: 0, zIndex: 5, flyDirection: 'right' }
  */
 export function getPositionConfig(position: CardPosition): PositionConfig {
-  return POSITION_CONFIGS[position];
+  const baseConfig = POSITION_CONFIGS[position];
+  
+  // Center and centerBack positions are always at 50%, no spread applied
+  if (position === CardPosition.CENTER || position === CardPosition.CENTER_BACK) {
+    return baseConfig;
+  }
+  
+  const centerPercent = 50;
+  const uniformSpread = configSettings.CARD_SPREAD;
+  const customSpreadX = configSettings.CARD_SPREAD_X;
+  const customSpreadY = configSettings.CARD_SPREAD_Y;
+  
+  // Determine which spread values to use
+  // If both X and Y are set: use only custom values (disable uniform)
+  // If only one is set: add it to uniform spread
+  // If neither is set: use uniform spread for both
+  let spreadX: number;
+  let spreadY: number;
+  
+  if (customSpreadX !== null && customSpreadY !== null) {
+    // Both custom values set: use only custom (disable uniform)
+    spreadX = customSpreadX;
+    spreadY = customSpreadY;
+  } else if (customSpreadX !== null) {
+    // Only X set: add to uniform
+    spreadX = uniformSpread + customSpreadX;
+    spreadY = uniformSpread;
+  } else if (customSpreadY !== null) {
+    // Only Y set: add to uniform
+    spreadX = uniformSpread;
+    spreadY = uniformSpread + customSpreadY;
+  } else {
+    // Neither set: use uniform for both
+    spreadX = uniformSpread;
+    spreadY = uniformSpread;
+  }
+  
+  // Calculate new positions based on spread
+  // Higher spread moves cards further from center toward their corners
+  let newTop: string;
+  let newLeft: string;
+  
+  if (position === CardPosition.TOP_LEFT) {
+    // Top-left: move up and left from center
+    newTop = `${centerPercent - spreadY}%`;
+    newLeft = `${centerPercent - spreadX}%`;
+  } else if (position === CardPosition.TOP_RIGHT) {
+    // Top-right: move up and right from center
+    newTop = `${centerPercent - spreadY}%`;
+    newLeft = `${centerPercent + spreadX}%`;
+  } else if (position === CardPosition.BOTTOM_LEFT) {
+    // Bottom-left: move down and left from center
+    newTop = `${centerPercent + spreadY}%`;
+    newLeft = `${centerPercent - spreadX}%`;
+  } else {
+    // Bottom-right: move down and right from center
+    newTop = `${centerPercent + spreadY}%`;
+    newLeft = `${centerPercent + spreadX}%`;
+  }
+  
+  return {
+    ...baseConfig,
+    top: newTop,
+    left: newLeft,
+  };
 }
 
 export function getCardLetter(cardId: CardId): string {

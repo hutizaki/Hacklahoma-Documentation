@@ -1,0 +1,277 @@
+---
+sidebar_position: 4
+title: Postcard Component
+description: Individual card styling and customization
+parent: PhotoCollage Component
+---
+
+import BrowserWindow from '@site/src/components/BrowserWindow';
+import { Postcard } from '@site/src/components/photoCollage/photoCollageComponents/Postcard';
+
+# Postcard Component
+
+The Postcard component renders individual photo cards with vintage postcard styling. Each card displays an image (or demo number), title text, and footer text.
+
+<BrowserWindow>
+  <div style={{ padding: '2rem', display: 'flex', justifyContent: 'center' }}>
+    <Postcard
+      title="Example Photo, Norman, Okla."
+      footer="PHOTO-001"
+      demoNumber={1}
+    />
+  </div>
+</BrowserWindow>
+
+## Overview
+
+The Postcard component creates the visual styling for each card in the collage. It handles:
+- Image display (or demo number placeholder)
+- Title text styling (top of card)
+- Footer text styling (bottom of card)
+- Background color from Config
+- Vintage aesthetic with custom fonts
+
+## File Location
+
+```
+src/components/photoCollage/photoCollageComponents/Postcard.tsx
+```
+
+## Props
+
+| Prop | Type | Required | Description |
+|------|------|----------|-------------|
+| `imageUrl` | `string` | No | URL/path to the image file |
+| `title` | `string` | Yes | Title text displayed above the image |
+| `footer` | `string` | Yes | Footer text displayed below the image |
+| `demoNumber` | `number` | No | Demo mode: displays a number instead of an image |
+
+## Basic Usage
+
+```tsx
+import { Postcard } from './photoCollageComponents/Postcard';
+
+<Postcard
+  imageUrl="/path/to/image.jpg"
+  title="My Photo Title"
+  footer="PHOTO-001"
+/>
+```
+
+## Styling Details
+
+### Background Color
+
+The background color comes from `Config.ts`:
+
+```tsx
+style={{ backgroundColor: configSettings.FRAMED_CARD_BG }}
+```
+
+To change the background color, edit `Config.ts` (see [Config documentation](./config)).
+
+### Title Text
+
+The title appears at the top right of the card with:
+- Font: `'American Typewriter, serif'`
+- Size: `14px`
+- Style: `italic`
+- Color: `text-gray-700`
+- Letter spacing: `0.5px`
+
+### Footer Text
+
+The footer appears at the bottom right with:
+- Font: `'Courier New, monospace'`
+- Size: `11px`
+- Color: `text-gray-600`
+- Letter spacing: `tracking-widest`
+
+### Image Display
+
+Images are displayed with:
+- Aspect ratio: `8/5` (maintains postcard proportions)
+- Object fit: `fill` (fills the entire space)
+- Full width within the card padding
+
+## Customization
+
+### Changing Fonts
+
+To change the title font, edit the style object in `Postcard.tsx`:
+
+```tsx
+style={{
+  fontFamily: 'Your Font Name, serif', // Change this
+  fontSize: '14px',
+  fontStyle: 'italic',
+  letterSpacing: '0.5px'
+}}
+```
+
+To change the footer font:
+
+```tsx
+style={{
+  fontFamily: 'Your Font Name, monospace', // Change this
+  fontSize: '11px'
+}}
+```
+
+### Changing Text Colors
+
+Update the Tailwind classes:
+
+```tsx
+// Title color
+className="text-gray-700" // Change to text-blue-700, text-red-700, etc.
+
+// Footer color
+className="text-gray-600" // Change to text-blue-600, text-red-600, etc.
+```
+
+### Changing Text Sizes
+
+Modify the `fontSize` in the style objects:
+
+```tsx
+// Title size
+fontSize: '16px', // Larger title
+
+// Footer size
+fontSize: '13px', // Larger footer
+```
+
+### Changing Shadow
+
+Modify the shadow class:
+
+```tsx
+className="px-6 shadow-lg" // Lighter shadow
+// or
+className="px-6 shadow-xl" // Heavier shadow
+```
+
+## Demo Mode
+
+When `demoNumber` is provided, the component displays a numbered placeholder instead of an image:
+
+```tsx
+<Postcard
+  title="Demo Photo"
+  footer="DEMO-001"
+  demoNumber={1}
+/>
+```
+
+The demo number appears in a gradient background (blue to purple) with a large, bold number.
+
+## Complete Customization Example
+
+```tsx
+// In Postcard.tsx, you could customize like this:
+
+<div className="px-6 shadow-2xl" style={{ backgroundColor: configSettings.FRAMED_CARD_BG }}>
+  {/* Custom title styling */}
+  <div className="text-right pr-6 pt-2">
+    <p
+      className="text-blue-700 tracking-wide mb-0"
+      style={{
+        fontFamily: 'Georgia, serif', // Changed font
+        fontSize: '16px',              // Larger size
+        fontStyle: 'italic',
+        letterSpacing: '0.5px'
+      }}
+    >
+      {title}
+    </p>
+  </div>
+
+  {/* Image display */}
+  <div className="digital-photo">
+    {demoNumber !== undefined ? (
+      // Demo mode
+      <div className="w-full h-auto flex items-center justify-center bg-gradient-to-br from-blue-200 to-purple-200"
+        style={{ aspectRatio: '8/5' }}>
+        <span className="text-8xl font-bold text-gray-700 select-none">
+          {demoNumber}
+        </span>
+      </div>
+    ) : (
+      <img
+        src={imageUrl}
+        alt={title}
+        className="w-full h-auto block"
+        style={{ aspectRatio: '8/5', objectFit: 'fill' }}
+      />
+    )}
+  </div>
+
+  {/* Custom footer styling */}
+  <div className="text-right py-[0.25rem] pr-2">
+    <p
+      className="text-blue-600 text-xs tracking-widest mb-0"
+      style={{
+        fontFamily: 'Monaco, monospace', // Changed font
+        fontSize: '12px'                  // Larger size
+      }}
+    >
+      {footer}
+    </p>
+  </div>
+</div>
+```
+
+## Best Practices
+
+### Font Selection
+
+- Use serif fonts for titles to maintain vintage aesthetic
+- Use monospace fonts for footers to match postcard style
+- Ensure fonts are web-safe or properly loaded
+
+### Color Contrast
+
+- Ensure text colors have sufficient contrast against the background
+- Test readability on different backgrounds
+- Consider accessibility guidelines (WCAG AA minimum)
+
+### Text Length
+
+- Keep titles concise (they appear above the image)
+- Footer text should be short (appears in small font)
+- Long text may overflow or look cluttered
+
+## Troubleshooting
+
+### Text Not Visible
+
+If text doesn't appear:
+
+1. Check that `title` and `footer` props are provided
+2. Verify text color has contrast against background
+3. Check browser console for font loading errors
+
+### Images Not Displaying
+
+If images don't show:
+
+1. Verify `imageUrl` is a valid path
+2. Check that image file exists
+3. Ensure image format is supported (jpg, png, webp)
+4. Check browser console for loading errors
+
+### Styling Not Applying
+
+If custom styles don't work:
+
+1. Check that you saved the file
+2. Clear browser cache
+3. Restart development server
+4. Verify CSS class names are correct
+
+## Related Files
+
+- [Config](./config) - Background color configuration
+- [PhotoGallery](./photoGallery) - Photo data source
+- [Main PhotoCollage Documentation](../photocollage) - Complete component guide
