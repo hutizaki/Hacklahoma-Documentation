@@ -7,10 +7,10 @@
 
 import React, { useState } from 'react';
 import * as motion from 'motion/react-client';
-import { CardPosition, POSITION_CONFIGS, CardId } from './Card';
-import configSettings from './Config';
-import { Postcard } from './Postcard';
-import { getPhotoData } from './PhotoGallery';
+import { CardPosition, POSITION_CONFIGS, CardId } from './card';
+import configSettings from './config';
+import { Postcard } from './postcard';
+import { getPhotoData } from './photoGallery';
 
 // Helper function to calculate position percentages with spread values
 const getPositionPercentages = (

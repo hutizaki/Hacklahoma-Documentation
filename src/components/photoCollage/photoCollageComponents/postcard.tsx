@@ -10,7 +10,7 @@
  */
 
 import React from 'react';
-import configSettings from './Config';
+import configSettings from './config';
 
 interface PostcardProps {
   /** URL/path to the image (optional in demo mode) */

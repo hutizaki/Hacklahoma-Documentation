@@ -16,7 +16,7 @@ CardFramerVariants contains animation definitions for each card state. Each vari
 ## File Location
 
 ```
-src/components/PhotoCollage/PhotoCollageComponents/CardFramerVariants.ts
+src/components/photoCollage/photoCollageComponents/CardFramerVariants.ts
 ```
 
 ## Animation States
@@ -242,7 +242,7 @@ flyLeft: (config: VariantCustomProps) => ({
 
 ### Staggered Entrance Delays
 
-The `onscreen` variant uses `config.delay` for staggered entrances. This is set in `PhotoCollage.tsx`:
+The `onscreen` variant uses `config.delay` for staggered entrances. This is set in `photoCollage.tsx`:
 
 ```tsx
 const entranceDelay = Math.max(0, (card.zIndex - 1) * 0.15);

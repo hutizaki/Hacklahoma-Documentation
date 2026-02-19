@@ -25,7 +25,7 @@ import {
   CardAnimationMap,
   AnimationState,
   getPositionConfig,
-} from './Card';
+} from './card';
 
 /**
  * Result object returned by shuffle operations.

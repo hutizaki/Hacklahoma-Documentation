@@ -7,9 +7,9 @@
 
 import React, { MutableRefObject } from 'react';
 import * as motion from 'motion/react-client';
-import { Card, CardId, CardAnimationMap } from './Card';
-import { executeForwardShuffle, executeBackwardShuffle } from './CardShuffleLogic';
-import configSettings from './Config';
+import { Card, CardId, CardAnimationMap } from './card';
+import { executeForwardShuffle, executeBackwardShuffle } from './cardShuffleLogic';
+import configSettings from './config';
 
 /**
  * Simple SVG arrow component (inline to avoid external asset dependencies)

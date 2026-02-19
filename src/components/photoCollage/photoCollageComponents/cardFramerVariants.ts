@@ -17,8 +17,8 @@
 */
 
 import type { Variants } from 'motion/react';
-import { PositionConfig } from './Card';
-import configSettings from './Config';
+import { PositionConfig } from './card';
+import configSettings from './config';
 
 /**
  * Custom properties passed to variants for dynamic animation calculations.

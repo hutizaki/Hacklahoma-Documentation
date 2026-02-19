@@ -9,7 +9,7 @@
  */
 
 import React from 'react';
-import { Postcard } from './Postcard';
+import { Postcard } from './postcard';
 
 /**
  * Photo data interface

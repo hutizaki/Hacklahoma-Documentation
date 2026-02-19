@@ -6,7 +6,7 @@
  * easier to maintain and extend.
  */
 
-import configSettings from './Config';
+import configSettings from './config';
 
 /**
  * Represents the six distinct positions cards can occupy in the collage.

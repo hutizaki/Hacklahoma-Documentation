@@ -28,17 +28,17 @@ import {
   AnimationState,
   getPositionConfig,
   getCardLetter, // <-- This changes to getPhotoData 🟥🟥🟥🟥🟥 EDIT THIS LINE WHEN IMAGES ARE ADDED 🟥🟥🟥🟥🟥
-} from './PhotoCollageComponents/Card';
+} from './photoCollageComponents/card';
 
 // Logic and data imports
-import { photoCollageCardVariants } from './PhotoCollageComponents/CardFramerVariants';
-import { initializeCards, executeForwardShuffle, executeBackwardShuffle } from './PhotoCollageComponents/CardShuffleLogic';
-import { getPhotoData, photoImages } from './PhotoCollageComponents/PhotoGallery';
-import configSettings from './PhotoCollageComponents/Config';
+import { photoCollageCardVariants } from './photoCollageComponents/cardFramerVariants';
+import { initializeCards, executeForwardShuffle, executeBackwardShuffle } from './photoCollageComponents/cardShuffleLogic';
+import { getPhotoData, photoImages } from './photoCollageComponents/photoGallery';
+import configSettings from './photoCollageComponents/config';
 
 // Component imports
-import { ShuffleButton } from './PhotoCollageComponents/ShuffleButton';
-import { Postcard } from './PhotoCollageComponents/Postcard';
+import { ShuffleButton } from './photoCollageComponents/shuffleButton';
+import { Postcard } from './photoCollageComponents/postcard';
 
 /**
  * Main Photo Collage Component

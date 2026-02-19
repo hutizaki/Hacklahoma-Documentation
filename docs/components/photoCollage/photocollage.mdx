@@ -5,8 +5,8 @@ title: PhotoCollage Component
 description: Complete guide to using the PhotoCollage component
 ---
 
-import BrowserWindow from '@site/src/components/BrowserWindow';
-import PhotoCollage from '@site/src/components/PhotoCollage/PhotoCollage';
+import BrowserWindow from '@site/src/components/browserWindow';
+import PhotoCollage from '@site/src/components/photoCollage/photoCollage';
 
 # PhotoCollage Component
 
@@ -38,7 +38,7 @@ PhotoCollage is a React component that creates an engaging visual experience by 
 The simplest way to use PhotoCollage:
 
 ```jsx
-import PhotoCollage from './components/PhotoCollage/PhotoCollage';
+import PhotoCollage from './components/photoCollage/photoCollage';
 
 function MyPage() {
   return <PhotoCollage />;
@@ -52,7 +52,7 @@ That's it! The component handles all state management and animations internally.
 You can easily integrate PhotoCollage into any page:
 
 ```jsx
-import PhotoCollage from './components/PhotoCollage/PhotoCollage';
+import PhotoCollage from './components/photoCollage/photoCollage';
 
 function GalleryPage() {
   return (
@@ -97,7 +97,7 @@ The individual card that displays each photo.
 **Example:**
 
 ```tsx
-import { Postcard } from './PhotoCollageComponents/Postcard';
+import { Postcard } from './photoCollageComponents/postcard';
 
 <Postcard
   imageUrl="/path/to/image.jpg"
@@ -117,23 +117,23 @@ The navigation arrow buttons (left/right). This component is used internally by 
 Understanding the component structure helps with customization:
 
 ```
-src/components/PhotoCollage/
-├── PhotoCollage.tsx              # Main component (use this!)
-├── PhotoCollageComponents/
-│   ├── Postcard.tsx              # Individual card component
-│   ├── ShuffleButton.tsx         # Navigation button component
-│   ├── Card.ts                   # TypeScript types and interfaces
-│   ├── CardFramerVariants.ts     # Animation definitions
-│   ├── CardShuffleLogic.ts       # Shuffle algorithm logic
-│   ├── PhotoGallery.ts           # Photo data management
-│   └── Config.ts                 # Configuration constants
+src/components/photoCollage/
+├── photoCollage.tsx              # Main component (use this!)
+├── photoCollageComponents/
+│   ├── postcard.tsx              # Individual card component
+│   ├── shuffleButton.tsx         # Navigation button component
+│   ├── card.ts                   # TypeScript types and interfaces
+│   ├── cardFramerVariants.ts     # Animation definitions
+│   ├── cardShuffleLogic.ts       # Shuffle algorithm logic
+│   ├── photoGallery.ts           # Photo data management
+│   └── config.ts                 # Configuration constants
 ```
 
 ## Customization
 
 ### Adding Your Own Photos
 
-To add your own photos, edit `src/components/PhotoCollage/PhotoCollageComponents/PhotoGallery.ts`:
+To add your own photos, edit `src/components/photoCollage/photoCollageComponents/photoGallery.ts`:
 
 ```tsx
 // 1. Import your images
@@ -164,7 +164,7 @@ export const photoImages: PhotoData[] = [
 
 ### Customizing Card Styling
 
-Edit `src/components/PhotoCollage/PhotoCollageComponents/Postcard.tsx` to change:
+Edit `src/components/photoCollage/photoCollageComponents/Postcard.tsx` to change:
 
 - **Background color**: Modify `configSettings.FRAMED_CARD_BG` in `Config.ts`
 - **Fonts**: Change the `fontFamily` in the style objects (currently 'American Typewriter' for title, 'Courier New' for footer)
@@ -173,7 +173,7 @@ Edit `src/components/PhotoCollage/PhotoCollageComponents/Postcard.tsx` to change
 
 ### Customizing Animation Speed
 
-Edit `src/components/PhotoCollage/PhotoCollageComponents/Config.ts`:
+Edit `src/components/photoCollage/photoCollageComponents/Config.ts`:
 
 ```tsx
 export default {
@@ -186,7 +186,7 @@ Increase `SHUFFLE_DELAY` for slower animations, decrease for faster ones.
 
 ### Customizing Button Appearance
 
-Edit `src/components/PhotoCollage/PhotoCollageComponents/ShuffleButton.tsx`:
+Edit `src/components/photoCollage/photoCollageComponents/ShuffleButton.tsx`:
 
 - **Opacity**: Change `opacity-20` class to make buttons more or less visible
 - **Hover opacity**: Modify `opacity: 0.8` in `whileHover` to change hover effect
@@ -279,7 +279,7 @@ This prevents accidental shuffles when scrolling vertically.
 ### Basic Usage
 
 ```jsx
-import PhotoCollage from './components/PhotoCollage/PhotoCollage';
+import PhotoCollage from './components/photoCollage/photoCollage';
 
 function Gallery() {
   return <PhotoCollage />;
@@ -289,7 +289,7 @@ function Gallery() {
 ### In a Page Layout
 
 ```jsx
-import PhotoCollage from './components/PhotoCollage/PhotoCollage';
+import PhotoCollage from './components/photoCollage/photoCollage';
 
 function EventPage() {
   return (
@@ -305,7 +305,7 @@ function EventPage() {
 ### With Custom Wrapper
 
 ```jsx
-import PhotoCollage from './components/PhotoCollage/PhotoCollage';
+import PhotoCollage from './components/photoCollage/photoCollage';
 
 function StyledGallery() {
   return (
