@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunkhacklahoma_documentation=globalThis.webpackChunkhacklahoma_documentation||[]).push([[1903],{1912:a=>{a.exports=JSON.parse('{"blogBasePath":"/Hacklahoma_Documentation/blog","blogTitle":"Blog","authorsListPath":"/Hacklahoma_Documentation/blog/authors"}')}}]);

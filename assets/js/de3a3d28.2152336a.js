@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunkhacklahoma_documentation=globalThis.webpackChunkhacklahoma_documentation||[]).push([[8585],{9805:a=>{a.exports=JSON.parse('{"metadata":{"permalink":"/Hacklahoma_Documentation/blog","page":1,"postsPerPage":10,"totalPages":1,"totalCount":4,"blogDescription":"Blog","blogTitle":"Blog"}}')}}]);
