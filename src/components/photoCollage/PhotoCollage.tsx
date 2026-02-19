@@ -6,7 +6,7 @@
  * 
  * Architecture:
  * - Pure presentational component (UI only)
- * - Business logic delegated to cardShuffleLogic module
+ * - Business logic delegated to CardShuffleLogic module
  * - Position configs and cycles defined in cardPositions module
  * - Animation variants defined in photoCollageVariants module
  * - All types centralized in photoCollageTypes module
